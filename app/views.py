@@ -3,6 +3,7 @@ from flask_login import current_user, login_user
 from app.models import User, Document
 from app import app
 from app import db
+import string
 
 from gensim.summarization.summarizer import summarize
 
@@ -34,9 +35,9 @@ def login():
 	else:
 		login_user(user)
 		response["loggedin"] = True
-		response["User"] = string(username)
+		response["User"] = username
 		myDocs = user.documents
-		titleList = [string(d.title) for d in myDocs]
+		titleList = [d.title for d in myDocs]
 		response["mydocs"] = titleList
 	
 	return json.dumps(response)
@@ -67,10 +68,11 @@ def register():
 	response["registered"] = True
 	return json.dumps(response)
 
-@app.route('/getSummary')
+@app.route('/getSummary', methods=['GET', 'POST'])
 def getSummary():
-	textMessage = json.loads(request.data.decode('utf-8'))
-	print(textMessage)
+	print(request)
+	textMessage = json.loads(request.data)
+	# print(textMessage)
 	summary = summarize(text = textMessage["content"])
 	response = {'summary': summary, 'title': 'fixed'}
 	return json.dumps(response)
