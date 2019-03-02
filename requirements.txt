@@ -38,7 +38,6 @@ murmurhash==1.0.1
 nbconvert==5.4.0
 nbformat==4.4.0
 nltk==3.3
-notebook==5.7.0
 numpy==1.15.1
 parse==1.9.0
 pathlib==1.0.1
@@ -83,7 +82,6 @@ singledispatch==3.4.0.3
 six==1.11.0
 SQLAlchemy==1.2.12
 subprocess32==3.5.2
-termcolor==1.1.0
 terminado==0.8.1
 testpath==0.4.2
 textract==1.6.1
