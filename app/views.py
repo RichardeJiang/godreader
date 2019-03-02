@@ -14,10 +14,12 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	if current_user.is_authenticated:
+	if current_user.is_active:
 		print("logged in already")
+	else:
+		print("logging in?")
 		# return redirect(url_for('index'))
-	response = {"loggedin": False}
+	response = {"loggedin": False, "Error": "None", "User": "None"}
 	userInformation = json.loads(request.data)
 	username = userInformation["username"]
 	password = userInformation["password"]
@@ -27,10 +29,17 @@ def login():
 	print(password)
 	if user is None or user.password != password:
 		print("invalid user!")
-		return json.dumps(response)
+		response["Error"] = "Invalid username or password!"
+		# return json.dumps(response)
 	else:
+		login_user(user)
 		response["loggedin"] = True
-		return json.dumps(response)
+		response["User"] = string(username)
+		myDocs = user.documents
+		titleList = [string(d.title) for d in myDocs]
+		response["mydocs"] = titleList
+	
+	return json.dumps(response)
 
 	# form = LoginForm()
 	# if form.validate_on_submit():
@@ -45,13 +54,18 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+	response = {"registered": False, "error": "None"}
 	userInformation = json.loads(request.data)
 	username = userInformation["username"]
 	password = userInformation["password"]
+	if User.query.filter_by(username=username).first() is not None:
+		response["error"] = "User already exists!"
+		return json.dumps(response)
 	newUser = User(username=username, email=username, password = password)
 	db.session.add(newUser)
 	db.session.commit()
-	return json.dumps({"registered": True})
+	response["registered"] = True
+	return json.dumps(response)
 
 @app.route('/getSummary')
 def getSummary():
