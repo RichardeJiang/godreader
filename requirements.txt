@@ -84,7 +84,6 @@ SQLAlchemy==1.2.12
 subprocess32==3.5.2
 terminado==0.8.1
 testpath==0.4.2
-textract==1.6.1
 thinc==6.12.0
 toolz==0.9.0
 tornado==5.1.1
