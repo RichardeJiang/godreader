@@ -13,6 +13,22 @@ def index():
 	return json.dumps({'ok': 1, 'test':2, 'ooo':3})
 	# return render_template("index.html")
 
+@app.route('/adddata')
+def add():
+	user1 = User(username="yanzhe", password="testpass")
+	user2 = User(username="shenhao", password="testpass")
+	user3 = User(username="xiaoming", password="testpass")
+	db.session.add(user1)
+	db.session.add(user2)
+	db.session.add(user3)
+	doc = Document(holder=user1, title="testingtitle", original_text="testtext", summary="testsummary")
+	db.session.add(doc)
+
+	db.session.commit()
+
+	return json.dumps({'result': 'successful'})
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if current_user.is_active:
