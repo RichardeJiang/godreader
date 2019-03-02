@@ -8,7 +8,7 @@ from gensim.summarization.summarizer import summarize
 
 @app.route('/')
 def index():
-	print "MAS testing"
+	# print "MAS testing"
 	return json.dumps({'ok': 1, 'test':2, 'ooo':3})
 	# return render_template("index.html")
 
